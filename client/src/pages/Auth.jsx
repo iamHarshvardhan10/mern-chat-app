@@ -9,9 +9,12 @@ import { toast } from "sonner";
 import axiosInstance from "../utils/apiClient";
 import { LOGIN_ROUTES, SIGNUP_ROUTES } from "../constant/constant";
 import { useNavigate } from "react-router-dom";
+import { useAppStore } from "../stores/index";
 
 const Auth = () => {
   const navigate = useNavigate();
+  // const { setUserInfo } = useAppStore;
+  const setUserInfo = useAppStore((state) => state.setUserInfo);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -49,6 +52,7 @@ const Auth = () => {
       const res = await axiosInstance.post(SIGNUP_ROUTES, { email, password });
       console.log(res);
       if (res.status == 201) {
+        setUserInfo(res.data.user);
         navigate("/profile");
       }
     }
@@ -64,7 +68,10 @@ const Auth = () => {
           { withCredentials: true }
         );
         console.log({ res });
-        if (res.status === 200) navigate("/profile");
+        if (res.status === 200) {
+          setUserInfo(res.data.user);
+          navigate("/profile");
+        }
       }
     } catch (error) {
       console.log(error);
