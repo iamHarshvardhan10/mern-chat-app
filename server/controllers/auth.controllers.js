@@ -93,4 +93,37 @@ export const login = async (req, res) => {
             success: false
         })
     }
-} 
+}
+
+
+export const getUserInfo = async (req, res) => {
+    try {
+        // console.log(req.id);
+        const userData = await User.findById(req.id);
+        if (!userData) {
+            return res.status(404).json({
+                message: 'User Not Found',
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: 'User Info',
+            success: true,
+            id: userData.id,
+            email: userData.email,
+            profileSetup: userData.profileSetup,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            image: userData.image,
+            color: userData.color
+
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            success: false
+        })
+    }
+}
