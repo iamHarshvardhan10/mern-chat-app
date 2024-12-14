@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, signup , getUserInfo } from '../controllers/auth.controllers.js';
+import { login, signup , getUserInfo , updateprofile } from '../controllers/auth.controllers.js';
 import { verifyUser } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
@@ -10,5 +10,7 @@ router.post('/signup', signup);
 router.post('/login', login)
 // get user info
 router.get('/userInfo' ,verifyUser, getUserInfo)
+// update profile
+router.post('/updateprofile' , verifyUser , updateprofile)
 
 export default router;
