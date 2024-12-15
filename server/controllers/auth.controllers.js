@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { renameSync, unlink } from 'fs'
 export const signup = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -162,5 +163,54 @@ export const updateprofile = async (req, res) => {
             message: 'Internal Server Error',
             success: false
         })
+    }
+}
+
+
+export const addprofileimage = async (req, res) => {
+    try {
+        const date = Date.now();
+        let fileName = "uploads/profiles" + date + req.file.originalname;
+        renameSync(req.file.path, fileName)
+
+        const updatedUser = await User.findByIdAndUpdate(req.id, { image: fileName }, { new: true, runValidators: true });
+        return res.status(200).json({
+            image: updatedUser.image
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            success: false
+        })
+    }
+}
+
+export const removeprofileimage = async (req, res) => {
+    try {
+        const { id } = req;
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found',
+            })
+        }
+        if (user.image) {
+
+            if (fs.existsSync(user.image)) {
+                unlink(user.image, (err) => {
+                    if (err) console.error("Error deleting image:", err);
+                });
+            }
+        }
+
+        user.image = null;
+        await user.save()
+        return res.status(200).json({
+            message: 'Profile image removed successfully',
+        })
+    } catch (error) {
+
     }
 }
