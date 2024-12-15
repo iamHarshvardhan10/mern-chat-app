@@ -7,7 +7,7 @@ dotenv.config();
 
 // Routes Path
 import authRoutes from './routes/auth.route.js';
-
+import contactRoutes from './routes/contact.route.js'
 const app = express();
 const port = process.env.PORT;
 const databaseURL = process.env.MONGODB_URL;
@@ -18,13 +18,14 @@ app.use(cors({
     credentials: true
 }))
 
-app.use("/uploads/profiles" , express.static("uploads/profiles"))
+app.use("/uploads/profiles", express.static("uploads/profiles"))
 app.use(express.json());
 app.use(cookieParser())
 
 
 // routes
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes);
+app.use('/api/contact', contactRoutes)
 
 const server = app.listen(port, () => {
     console.log(`server is running on ${port}`)
