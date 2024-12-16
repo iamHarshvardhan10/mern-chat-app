@@ -8,6 +8,7 @@ dotenv.config();
 // Routes Path
 import authRoutes from './routes/auth.route.js';
 import contactRoutes from './routes/contact.route.js'
+import setupSocket from './socket.js';
 const app = express();
 const port = process.env.PORT;
 const databaseURL = process.env.MONGODB_URL;
@@ -30,6 +31,9 @@ app.use('/api/contact', contactRoutes)
 const server = app.listen(port, () => {
     console.log(`server is running on ${port}`)
 })
+
+// 2) importing server into socket instance
+setupSocket(server)
 
 mongoose
     .connect(databaseURL)
