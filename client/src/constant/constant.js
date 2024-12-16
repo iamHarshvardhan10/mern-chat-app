@@ -7,3 +7,5 @@ export const UPDATE_PROFILE_ROUTE = `/api/auth/updateprofile`
 export const ADD_PROFILE_IMAGE = `/api/auth/addprofileimage`
 export const REMOVE_PROFILE_IMAGE = `/api/auth/removeprofileimage`;
 export const LOGOUT_ROUTE = `/api/auth/logout`;
+
+export const SEARCH_CONTACTS_ROUTE = `/api/contact/search`

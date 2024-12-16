@@ -3,11 +3,11 @@ import { useAppStore } from "../stores";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import ContactContainer from "../components/chat/ContactContainer";
-// import EmptyContainer from "../components/chat/EmptyContainer";
+import EmptyContainer from "../components/chat/EmptyContainer";
 import ChatContainer from "../components/chat/ChatContainer";
 
 const Chat = () => {
-  const { userInfo } = useAppStore();
+  const { userInfo, selectedChatType } = useAppStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,8 +19,9 @@ const Chat = () => {
   return (
     <div className="flex h-[100vh] text-white overflow-hidden">
       <ContactContainer />
-      {/* <EmptyContainer /> */}
-      <ChatContainer />
+
+      {selectedChatType === undefined ? <EmptyContainer /> : <ChatContainer />}
+      {/* */}
     </div>
   );
 };
