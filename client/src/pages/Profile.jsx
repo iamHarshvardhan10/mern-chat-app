@@ -60,7 +60,9 @@ const Profile = () => {
           { withCredentials: true }
         );
         if (res.status === 200 && res.data) {
-          setUserInfo({ ...res.data });
+          setUserInfo({
+            ...res.data,
+          });
           toast.success("Profile updated successfully");
           navigate("/chat");
         }
