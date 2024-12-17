@@ -16,6 +16,8 @@ const Chat = () => {
       navigate("/profile");
     }
   }, [userInfo, navigate]);
+
+  console.log("UserINFO", userInfo);
   return (
     <div className="flex h-[100vh] text-white overflow-hidden">
       <ContactContainer />
