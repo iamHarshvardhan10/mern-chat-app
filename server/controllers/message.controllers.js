@@ -18,7 +18,7 @@ export const getMessage = async (req, res) => {
                 { sender: user2, receiver: user1 }
             ]
         }).sort({ timestamp: 1 })
-
+        console.log(message)
         return res.status(200).json({
             message: "Messages retrieved successfully",
             message
@@ -27,3 +27,5 @@ export const getMessage = async (req, res) => {
         console.log(error)
     }
 }
+
+

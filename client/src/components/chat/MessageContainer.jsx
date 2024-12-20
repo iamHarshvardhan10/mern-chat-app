@@ -1,12 +1,44 @@
 import moment from "moment";
 import { useAppStore } from "../../stores";
 import { useEffect, useRef } from "react";
+import axiosInstance from "../../utils/apiClient";
+import { GET_USER_ROUTES } from "../../constant/constant";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
-  const { selectedChatData, selectedChatType, userInfo, selectedChatMessages } =
-    useAppStore();
+  const {
+    selectedChatData,
+    selectedChatType,
+    userInfo,
+    selectedChatMessages,
+    setSelectedChatMessages,
+  } = useAppStore();
 
+  console.log(selectedChatMessages)
+  useEffect(() => {
+    const getMessage = async () => {
+      try {
+        const res = await axiosInstance.get(
+          GET_USER_ROUTES,
+          {
+            id: selectedChatData._id,
+          },
+          { withCredentials: true }
+        );
+
+        if (res.data.message) {
+          setSelectedChatMessages(res.data.message);
+        }
+      } catch (error) {
+        console.log({ error });
+      }
+    };
+    if (selectedChatData._id) {
+      if (selectedChatType == "contact") {
+        getMessage();
+      }
+    }
+  }, [selectedChatData, selectedChatType, setSelectedChatMessages]);
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
