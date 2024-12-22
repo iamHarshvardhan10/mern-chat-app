@@ -2,7 +2,7 @@ import { useAppStore } from "../../stores";
 
 const ContactsList = ({ contacts, isChannel = false }) => {
   const {
-    selectedChatType,
+    // selectedChatType,
     selectedChatData,
     setSelectedChatType,
     setSelectedChatData,
@@ -20,21 +20,23 @@ const ContactsList = ({ contacts, isChannel = false }) => {
   console.log("Contacts", contacts);
   return (
     <div className="mt-5">
-      {contacts.map((contact) => {
-        return (
-          <div
-            key={contact._id}
-            className={`pl-10 transition-all duration-100 cursor-pointer ${
-              selectedChatData & (selectedChatData?._id === contact?._id)
-                ? "bg-[#8417ff] hover:bg-[#841744]"
-                : "hover:bg-[#f1f1f111]"
-            }`}
-            onClick={() => handleClick(contact)}
-          >
-            <div>{contact.firstName}</div>
-          </div>
-        );
-      })}
+      {contacts &&
+        contacts.length > 0 &&
+        contacts.map((contact) => {
+          return (
+            <div
+              key={contact._id}
+              className={`pl-10 transition-all duration-100 cursor-pointer ${
+                selectedChatData & (selectedChatData?._id === contact?._id)
+                  ? "bg-[#8417ff] hover:bg-[#841744]"
+                  : "hover:bg-[#f1f1f111]"
+              }`}
+              onClick={() => handleClick(contact)}
+            >
+              <div>{contact.firstName}</div>
+            </div>
+          );
+        })}
     </div>
   );
 };

@@ -16,16 +16,18 @@ import {
 import { Input } from "../ui/input";
 import axiosInstance from "../../utils/apiClient";
 import {
+  CREATE_CHANNEL_ROUTE,
   GET_ALL_CONTACTS,
 } from "../../constant/constant";
 
 // import { useAppStore } from "../../stores";
 import { Button } from "../ui/button";
 import MultipleSelector from "./MultipleSelector";
+import { useAppStore } from "../../stores";
 const CreateChannel = () => {
-  
-  const [openNewContactModal, setOpenNewContactModal] = useState(false);
-  
+  const { addChannel } = useAppStore();
+  const [openNewChannelModal, setOpenNewChannelModal] = useState(false);
+
   // console.log(searchContacts);
   const [allContacts, setAllContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
@@ -41,7 +43,29 @@ const CreateChannel = () => {
     getData();
   }, []);
 
-  const createChannel = async () => {};
+  const createChannel = async () => {
+    try {
+      if (channelName.length > 0 && selectedContacts.length > 0) {
+        const res = await axiosInstance.post(
+          CREATE_CHANNEL_ROUTE,
+          {
+            name: channelName,
+            members: selectedContacts.map((contact) => contact.value),
+          },
+          { withCredentials: true }
+        );
+        console.log("Res", res.data);
+        if (res.status === 200) {
+          setChannelName("");
+          setSelectedContacts([]);
+          setOpenNewChannelModal(false);
+          addChannel(res.data.Channel);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
       <TooltipProvider>
@@ -49,7 +73,7 @@ const CreateChannel = () => {
           <TooltipTrigger>
             <FaPlus
               className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300"
-              onClick={() => setOpenNewContactModal(true)}
+              onClick={() => setOpenNewChannelModal(true)}
             />
           </TooltipTrigger>
           <TooltipContent className="bg-[#1c1b1e] border-none mb-2 p-3 text-white">
@@ -57,7 +81,7 @@ const CreateChannel = () => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <Dialog open={openNewContactModal} onOpenChange={setOpenNewContactModal}>
+      <Dialog open={openNewChannelModal} onOpenChange={setOpenNewChannelModal}>
         <DialogContent className="bg-[#1c1b1e] border-none text-white w-[400px] h-[400px] flex flex-col">
           <DialogHeader>
             <DialogTitle>

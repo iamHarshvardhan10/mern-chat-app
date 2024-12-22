@@ -8,7 +8,10 @@ import ContactsList from "./ContactsList";
 import CreateChannel from "../Channel/CreateChannel";
 
 const ContactContainer = () => {
-  const { setDirectMesagesContacts, directMessagesContacts } = useAppStore();
+  const { setDirectMesagesContacts, directMessagesContacts, channels } =
+    useAppStore();
+
+  console.log("channels", channels);
   useEffect(() => {
     const getContacts = async () => {
       const res = await axiosInstance.get(GET_DM_CONTACTS_ROUTE, {
@@ -39,6 +42,9 @@ const ContactContainer = () => {
         <div className="flex items-center justify-between pr-10">
           <Title text={"Channels"} />
           <CreateChannel />
+        </div>
+        <div className="max-h-[38vw] overflow-y-auto scrollbar-hidden">
+          <ContactsList contacts={channels} isChannel={true} />
         </div>
       </div>
       <ProfileInfo />
