@@ -1,7 +1,10 @@
 import { useAppStore } from "../../stores";
 import { useEffect, useRef } from "react";
 import axiosInstance from "../../utils/apiClient";
-import { GET_USER_ROUTES } from "../../constant/constant";
+import {
+  GET_CHANNEL_MESSAGE_ROUTE,
+  GET_USER_ROUTES,
+} from "../../constant/constant";
 import moment from "moment";
 
 const MessageContainer = () => {
@@ -33,9 +36,25 @@ const MessageContainer = () => {
         console.log({ error });
       }
     };
+
+    const getChannelMessage = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${GET_CHANNEL_MESSAGE_ROUTE}/${selectedChatData._id}`,
+          { withCredentials: true }
+        );
+        if (res.data.message) {
+          setSelectedChatMessages(res.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     if (selectedChatData._id) {
       if (selectedChatType == "contact") {
         getMessage();
+      } else if (selectedChatType == "channel") {
+        getChannelMessage();
       }
     }
   }, [selectedChatData, selectedChatType, setSelectedChatMessages]);

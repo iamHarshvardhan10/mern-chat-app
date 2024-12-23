@@ -17,3 +17,4 @@ export const MESSAGE_ROUTE = `/api/message/getmessage`
 
 export const CREATE_CHANNEL_ROUTE = `/api/channel/createChannel`
 export const GET_USER_CHANNEL_ROUTE = `/api/channel/getUserChannels`
+export const GET_CHANNEL_MESSAGE_ROUTE = `/api/channel/getChannelMessage/:channelId`
