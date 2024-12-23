@@ -2,14 +2,21 @@ import { useEffect } from "react";
 import NewDm from "./NewDm";
 import ProfileInfo from "./ProfileInfo";
 import axiosInstance from "../../utils/apiClient";
-import { GET_DM_CONTACTS_ROUTE } from "../../constant/constant";
+import {
+  GET_DM_CONTACTS_ROUTE,
+  GET_USER_CHANNEL_ROUTE,
+} from "../../constant/constant";
 import { useAppStore } from "../../stores";
 import ContactsList from "./ContactsList";
 import CreateChannel from "../Channel/CreateChannel";
 
 const ContactContainer = () => {
-  const { setDirectMesagesContacts, directMessagesContacts, channels } =
-    useAppStore();
+  const {
+    setDirectMesagesContacts,
+    directMessagesContacts,
+    channels,
+    setChannels,
+  } = useAppStore();
 
   console.log("channels", channels);
   useEffect(() => {
@@ -22,8 +29,19 @@ const ContactContainer = () => {
         setDirectMesagesContacts(res.data.contacts);
       }
     };
+
+    const getChannels = async () => {
+      const res = await axiosInstance.get(GET_USER_CHANNEL_ROUTE, {
+        withCredentials: true,
+      });
+
+      if (res.data.channels) {
+        setChannels(res.data.channels);
+      }
+    };
     getContacts();
-  }, []);
+    getChannels();
+  }, [setChannels, setDirectMesagesContacts]);
   return (
     <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full">
       <div className="p-3">

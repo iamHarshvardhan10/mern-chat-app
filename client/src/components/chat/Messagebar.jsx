@@ -35,7 +35,16 @@ const Messagebar = () => {
         messageType: "text",
         fileUrl: undefined,
       });
+    } else {
+      socket.emit("send-channel-message", {
+        sender: userInfo.id,
+        content: message,
+        channel: selectedChatData._id,
+        messageType: "text",
+        fileUrl: undefined,
+      });
     }
+    setMessage("");
   };
   return (
     <div className="h-[10vh] bg-[#1c1d25] flex justify-center items-center px-8 mb-6 gap-6">

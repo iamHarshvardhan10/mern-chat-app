@@ -33,7 +33,9 @@ const ContactsList = ({ contacts, isChannel = false }) => {
               }`}
               onClick={() => handleClick(contact)}
             >
-              <div>{contact.firstName}</div>
+              <div>
+                {isChannel ? <p>{contact.name}</p> : <p>{contact.firstName}</p>}
+              </div>
             </div>
           );
         })}
